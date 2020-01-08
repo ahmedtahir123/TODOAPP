@@ -1,26 +1,109 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import "./App.css";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+import ListItem from './Mylist'
+
+
+
+
+
+class App extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+
+      items: [],
+      currentItem: {
+        text: "",
+        key: ""
+      }
+    };
+
+
+    this.handleInput = this.handleInput.bind(this);
+    this.addItem = this.addItem.bind(this);
+    this.deleteItem = this.deleteItem.bind(this);
+    this.updateItem = this.updateItem.bind(this);
+
+
+  }
+
+
+
+  handleInput(event) {
+    this.setState({
+      currentItem: {
+        text: event.target.value,
+        key: Date.now()
+      }
+    })
+
+  }
+
+  addItem(event) {
+    event.preventDefault();
+    const newItem = this.state.currentItem;
+    if (newItem.text !== "") {
+      const items = [...this.state.items, newItem];
+      this.setState({
+        items: items,
+        currentItem: {
+          text: '',
+          key: ''
+        }
+      })
+    }
+  };
+
+
+
+  deleteItem(key) {
+    const filteredItems = this.state.items.filter(item =>
+      item.key !== key);
+    console.log(filteredItems)
+
+    this.setState({
+      items: filteredItems
+    })
+
+  };
+
+
+  updateItem(text, key) {
+    const items = this.state.items;
+    items.map(item => {
+      if (item.key === key) {
+        item.text = text;
+      }
+    })
+    this.setState({
+      items: items
+    })
+
+
+  }
+
+
+  render() {
+    return (
+
+
+      <div className="App">
+        <form id="myform" onSubmit={this.addItem}>
+
+          <input type="text" placeholder="Enter " value={this.state.currentItem.text} onChange={this.handleInput} />
+
+          <button type='submit' >Add</button>
+          <ListItem items={this.state.items} deleteItem={this.deleteItem} updateItem={this.updateItem}></ListItem>
+
+
+
+
+        </form>
+      </div>
+
+    )
+  }
 }
 
 export default App;
