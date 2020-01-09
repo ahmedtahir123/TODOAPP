@@ -1,0 +1,14 @@
+.Logodiv{
+    width: 100%;
+    height: 80px;
+    background-color:white;
+    background-color: lightblue;
+
+}
+
+.items {
+    padding: 20px ;
+    display: flex;
+    justify-content:space-around;
+
+}
